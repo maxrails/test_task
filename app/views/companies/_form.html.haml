@@ -1,4 +1,8 @@
 = form_for @company, :html => { :class => 'form-horizontal' } do |f|
+  -@company.errors.full_messages.each do |msg|
+    .alert.alert-error
+      = msg
+      %button.close{ 'data-dismiss' => "alert" } ×
   .control-group
     = f.label :name, :class => 'control-label'
     .controls
