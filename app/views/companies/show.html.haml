@@ -1,0 +1,44 @@
+- model_class = @company.class
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human
+
+%p
+  %strong= model_class.human_attribute_name(:name) + ':'
+  %br
+  = @company.name
+%p
+  %strong= model_class.human_attribute_name(:phone) + ':'
+  %br
+  = @company.phone
+%p
+  %strong= model_class.human_attribute_name(:address) + ':'
+  %br
+  = @company.address
+%p
+  %strong Brends and Campaigns:
+  %br
+  -if @company.brends.present?
+    %ul.no-style-type
+      -@company.brends.each do |brend|
+        %li
+          %b Brend
+          =link_to brend.name, brend_path(brend)
+          -if brend.campaigns.present?
+            %br
+            %b Campigns
+            %ul.no-style-type
+              -brend.campaigns.each do |campaign|
+                %li
+                  From
+                  =link_to campaign.started_at.try(:civil), campaign_path(campaign)
+                  To
+                  =link_to campaign.ended_at.try(:civil), campaign_path(campaign)
+
+
+
+
+
+.form-actions
+  = link_to t('.back', :default => t("helpers.links.back")), companies_path, :class => 'btn'
+  = link_to t('.edit', :default => t("helpers.links.edit")), edit_company_path(@company), :class => 'btn'
+  = link_to t('.destroy', :default => t("helpers.links.destroy")), company_path(@company), :method => "delete", :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')), :class => 'btn btn-danger'

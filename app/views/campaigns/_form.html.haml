@@ -1,0 +1,48 @@
+=form_for @campaign, :html => { :class => 'form-horizontal' } do |f|
+  -@campaign.errors.full_messages.each do |msg|
+    .alert.alert-error
+      = msg
+      %button.close{ 'data-dismiss' => "alert" } ×
+  .control-group
+    = f.label :started_at, :class => 'control-label'
+    .controls
+      = f.text_field :started_at, :class => 'text_field validate[required]', :value=>(@campaign.started_at.strftime("%m/%d/%Y %H:%M") rescue nil)
+      = f.select :start_timezone, ActiveSupport::TimeZone.all.map{|t| [t,t]}, :class => 'select_field validate[required]'
+  .control-group
+    = f.label :ended_at, :class => 'control-label'
+    .controls
+      = f.text_field :ended_at, :class => 'text_field validate[required]', :value=>(@campaign.ended_at.strftime("%m/%d/%Y %H:%M") rescue nil)
+      = f.select :end_timezone, ActiveSupport::TimeZone.all.map{|t| [t,t]}, :class => 'select_field validate[required]'
+  .control-group
+    = f.label :brend_id, :class => 'control-label'
+    .controls
+      = f.select :brend_id, Brend.all.map{|t| ["#{t.name}(#{t.company.name})",t.id]}, :class => 'select_field validate[required]'
+  .control-group
+    = f.label :countries, :class => 'control-label'
+    .controls
+      %table.table#countries-table
+        -if @campaign.regions.present? && @campaign.languages.present?
+          -@campaign.regions.each do |index,value|
+            =render :partial=>'regions', :locals=>{:index=>index, :value=>value}
+        -else
+          =render :partial=>'regions', :locals=>{:index=>""}
+
+      = link_to "Add Country", "javascript:void(0)", :class => 'btn', :id => 'add-country'
+
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), campaigns_path, :class => 'btn'
+%script
+  $('#add-country').click(function(){
+  lastEl = $('#countries-table').find('select.countries:last');
+  if(lastEl == undefined){index = 1}else{
+  index = parseInt(lastEl.attr('name').replace('regions[','').replace(']',''));
+  };
+  $('#countries-table').append("#{escape_javascript(render :partial => 'regions', :locals=>{:index=>""})}");
+  lastEl = $('#countries-table').find('select.countries:last');
+  lastEl.attr('name','regions['+(index+1)+']');
+
+  langEl = $('#countries-table').find('select.languages:last');
+  langEl.attr('id','languages_'+(index+1)+'_');
+  langEl.attr('name','languages_'+(index+1)+'[]');
+  });

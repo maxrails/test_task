@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  phone: MyString
+  address: MyString
+  languages: MyString
+  started_at: 2012-05-25 19:07:38
+  ended_at: 2012-05-25 19:07:38
+  start_timezone: MyString
+  end_timezone: MyString
+  countries: MyString
+
+two:
+  name: MyString
+  phone: MyString
+  address: MyString
+  languages: MyString
+  started_at: 2012-05-25 19:07:38
+  ended_at: 2012-05-25 19:07:38
+  start_timezone: MyString
+  end_timezone: MyString
+  countries: MyString

@@ -1,0 +1,7 @@
+%tr.regions
+  %td.padding-top-30 Country:
+  %td.padding-top-30=select_tag 'regions', options_for_select(Country.all.map{|t,v| [t,t]}, :selected=>"#{index.present? ? value : nil}"), { :class => "countries validate[required]", :name => "regions[#{index.present? ? index : 1}]" }
+  %td.padding-top-30 Languges:
+  %td=select_tag 'languages_1[]', options_for_select(LanguageList::COMMON_LANGUAGES.map{|t| [t,t]}, :selected=>("#{@campaign.languages[index]}"[0..-2].split(',').collect{|t| t[2..-2]} rescue nil)), { :multiple => true, :class => "languages validate[required]", :name=>"languages_#{index.present? ? index : 1}[]", :id=>"languages_#{index.present? ? index : 1}_" }
+  %td.padding-top-30
+    =link_to "Remove", "javascript:void(0)", :class=>"remove_row"
